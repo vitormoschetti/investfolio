@@ -28,8 +28,16 @@ public class OperationResult<T extends Object> implements IResult {
         return new OperationResult(Boolean.TRUE, "", status, object);
     }
 
+    public static <T> OperationResult sucess(HttpStatus status) {
+        return new OperationResult(Boolean.TRUE, "", status);
+    }
+
     public static OperationResult fail(final String mensagem, HttpStatus status) {
         return new OperationResult(Boolean.FALSE, mensagem, status);
+    }
+
+    public static OperationResult fail(HttpStatus status) {
+        return new OperationResult(Boolean.FALSE, "", status);
     }
 
 }

@@ -8,5 +8,7 @@ public interface ICarteiraRepository extends IRepository<Carteira> {
 
     Boolean buscarPorNome(String nome);
 
-    Carteira criar(Carteira carteira);
+    Carteira persistir(Carteira carteira);
+
+    Carteira buscarPorId(Long idCarteira);
 }

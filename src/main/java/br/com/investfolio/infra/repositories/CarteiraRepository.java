@@ -18,7 +18,12 @@ public class CarteiraRepository implements ICarteiraRepository {
     }
 
     @Override
-    public Carteira criar(final Carteira carteira) {
+    public Carteira persistir(final Carteira carteira) {
         return this.adapter.criar(carteira);
+    }
+
+    @Override
+    public Carteira buscarPorId(Long idCarteira) {
+        return this.adapter.buscarPorId(idCarteira);
     }
 }

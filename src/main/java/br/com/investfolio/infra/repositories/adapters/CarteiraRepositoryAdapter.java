@@ -19,4 +19,8 @@ public class CarteiraRepositoryAdapter extends BaseAdapter<CarteiraJPARepository
     public Carteira criar(final Carteira carteira) {
         return this.to.save(carteira);
     }
+
+    public Carteira buscarPorId(final Long idCarteira) {
+        return this.to.findById(idCarteira).orElse(null);
+    }
 }

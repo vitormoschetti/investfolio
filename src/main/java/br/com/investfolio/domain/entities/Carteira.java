@@ -2,6 +2,7 @@ package br.com.investfolio.domain.entities;
 
 import br.com.investfolio.core.IEntity;
 import br.com.investfolio.domain.enums.StatusCarteiraEnum;
+import br.com.investfolio.domain.enums.TipoAtivoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,8 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -36,6 +39,10 @@ public class Carteira implements IEntity {
 
     private Instant dataCriacao;
 
+    @JoinColumn(name = "carteira_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Ativo> ativos = new HashSet<>();
+
     public void criar(final String nome) {
 
         // validar input dentro da entidade carteira
@@ -45,6 +52,19 @@ public class Carteira implements IEntity {
         this.totalAtual = BigDecimal.ZERO;
         this.status = StatusCarteiraEnum.ATIVA.getValue();
         this.dataCriacao = Instant.now().atOffset(ZoneOffset.UTC).toInstant();
+
+    }
+
+    public Boolean temAtivo(final String codigo) {
+        return this.ativos.stream().anyMatch(ativo -> ativo.getCodigo().equalsIgnoreCase(codigo));
+    }
+
+    public void adicionarNovoAtivo(final String codigo, final Long quantidade, final BigDecimal precoMedio,
+                                   final TipoAtivoEnum tipoAtivo) {
+
+        final var ativo = new Ativo(codigo, quantidade, tipoAtivo, precoMedio);
+
+        this.ativos.add(ativo);
 
     }
 }

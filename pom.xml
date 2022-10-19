@@ -50,6 +50,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.andrebreves</groupId>
+            <artifactId>java-tuple</artifactId>
+            <version>1.2.0</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

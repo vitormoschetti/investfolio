@@ -55,6 +55,11 @@
             <artifactId>java-tuple</artifactId>
             <version>1.2.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.mvallim</groupId>
+            <artifactId>java-fluent-validator</artifactId>
+            <version>1.10.0</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

@@ -36,6 +36,10 @@ public class OperationResult<T extends Object> implements IResult {
         return new OperationResult(Boolean.FALSE, mensagem, status);
     }
 
+    public static <T> OperationResult fail(final String mensagem, HttpStatus status, T data) {
+        return new OperationResult(Boolean.FALSE, mensagem, status, data);
+    }
+
     public static OperationResult fail(HttpStatus status) {
         return new OperationResult(Boolean.FALSE, "", status);
     }

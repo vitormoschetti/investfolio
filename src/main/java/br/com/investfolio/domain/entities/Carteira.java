@@ -45,9 +45,7 @@ public class Carteira implements IEntity {
 
     public void criar(final String nome) {
 
-        // validar input dentro da entidade carteira
-
-        this.nome = nome;
+        this.nome = nome.trim();
         this.totalInvestido = BigDecimal.ZERO;
         this.totalAtual = BigDecimal.ZERO;
         this.status = StatusCarteiraEnum.ATIVA.getValue();

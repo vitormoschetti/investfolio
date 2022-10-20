@@ -4,8 +4,7 @@ import br.com.fluentvalidator.AbstractValidator;
 import br.com.investfolio.application.dtos.inputmodel.CarteiraInputModel;
 import org.springframework.stereotype.Component;
 
-import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
-import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeGreaterThan;
+import static br.com.fluentvalidator.predicate.StringPredicate.*;
 import static java.util.function.Predicate.not;
 
 @Component
@@ -16,10 +15,10 @@ public class CarteiraInputModelValidator extends AbstractValidator<CarteiraInput
 
         ruleFor(CarteiraInputModel::getNome)
                 .must(not(stringEmptyOrNull()))
-                .withMessage("Não pode ser nulo")
+                .withMessage("Não pode ser nulo ou vazio")
                 .withFieldName("Nome")
-                .must(stringSizeGreaterThan(5))
-                .withMessage("Deve ter mais que 5 caracteres")
+                .must(stringSizeGreaterThanOrEqual(5))
+                .withMessage("Deve ter mais que 4 caracteres")
                 .withFieldName("Nome");
 
     }

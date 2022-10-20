@@ -21,7 +21,7 @@ public class CarteiraAtivoRestController {
 
         final var operationResult = this.useCase.execute(Tuple.of(idCarteira, input));
 
-        return ResponseEntity.status(operationResult.getStatus()).build();
+        return ResponseEntity.status(operationResult.getStatus()).body(operationResult);
 
     }
 

@@ -1,8 +1,11 @@
 package br.com.investfolio.application.useCase;
 
+import br.com.fluentvalidator.context.ValidationResult;
 import br.com.investfolio.application.dtos.inputmodel.AdicionarAtivoInputModel;
+import br.com.investfolio.application.dtos.inputmodel.validator.AdicionarAtivoInputModelValidator;
 import br.com.investfolio.application.service.ICarteiraService;
 import br.com.investfolio.core.patterns.result.OperationResult;
+import br.com.investfolio.core.patterns.result.OperationResultErrorMessage;
 import br.com.investfolio.core.useCases.IUseCaseWithParams;
 import com.andrebreves.tuple.Tuple2;
 import lombok.AllArgsConstructor;
@@ -20,6 +23,11 @@ public class AdicionarAtivoUseCase implements IUseCaseWithParams<Tuple2<Long, Ad
 
         final var idCarteira = param.v1();
         final var input = param.v2();
+
+        final var validate = new AdicionarAtivoInputModelValidator().validate(input);
+
+        if (!validate.isValid())
+            return OperationResult.fail("Input inválido", HttpStatus.UNPROCESSABLE_ENTITY, new OperationResultErrorMessage(validate.getErrors()));
 
         final var result = this.carteiraService.adicionarAtivo(idCarteira, input);
 

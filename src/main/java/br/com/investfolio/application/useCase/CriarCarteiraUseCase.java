@@ -2,7 +2,7 @@ package br.com.investfolio.application.useCase;
 
 import br.com.investfolio.application.dtos.inputmodel.CarteiraInputModel;
 import br.com.investfolio.application.dtos.inputmodel.validator.CarteiraInputModelValidator;
-import br.com.investfolio.application.factory.CarteiraFactory;
+import br.com.investfolio.application.factories.CarteiraFactory;
 import br.com.investfolio.application.service.CarteiraService;
 import br.com.investfolio.core.patterns.result.OperationResult;
 import br.com.investfolio.core.patterns.result.OperationResultErrorMessage;
@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -30,6 +31,12 @@ public class CriarCarteiraUseCase implements IUseCaseWithParams<CarteiraInputMod
 
         final var carteira = this.carteiraService.criar(carteiraInputModel);
 
-        return new CarteiraFactory().create(carteira);
+        final var carteiraViewModel = new CarteiraFactory().create(carteira);
+
+        if (Objects.isNull(carteira))
+            return OperationResult.fail("Carteira já existe", HttpStatus.UNPROCESSABLE_ENTITY);
+
+        return OperationResult.sucess(carteiraViewModel, HttpStatus.CREATED);
+
     }
 }

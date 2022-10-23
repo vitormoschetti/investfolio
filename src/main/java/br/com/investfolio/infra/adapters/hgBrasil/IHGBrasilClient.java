@@ -1,6 +1,6 @@
 package br.com.investfolio.infra.adapters.hgBrasil;
 
-import br.com.investfolio.infra.adapters.hgBrasil.dtos.AcaoInputModel;
+import br.com.investfolio.infra.adapters.hgBrasil.dtos.AtivoHGInputModel;
 import br.com.investfolio.infra.adapters.hgBrasil.dtos.AutenticacaoChaveHGBrasilInputModel;
 import br.com.investfolio.infra.adapters.hgBrasil.dtos.FinancaInputModel;
 import br.com.investfolio.core.httpClient.interfaces.IHttpClient;
@@ -17,7 +17,7 @@ public interface IHGBrasilClient extends IHttpClient {
     ResponseEntity<FinancaInputModel> obterIndices();
 
     @GetMapping("/stock_price")
-    ResponseEntity<AcaoInputModel> obterAtivo(@RequestParam(name = "symbol") String codigo);
+    ResponseEntity<AtivoHGInputModel> obterAtivo(@RequestParam(name = "symbol") String codigo);
 
 
 }

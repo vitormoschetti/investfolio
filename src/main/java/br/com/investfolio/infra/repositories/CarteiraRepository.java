@@ -6,6 +6,8 @@ import br.com.investfolio.infra.repositories.interfaces.ICarteiraRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+
 @Repository
 @AllArgsConstructor
 public class CarteiraRepository implements ICarteiraRepository {
@@ -25,5 +27,10 @@ public class CarteiraRepository implements ICarteiraRepository {
     @Override
     public Carteira buscarPorId(Long idCarteira) {
         return this.adapter.buscarPorId(idCarteira);
+    }
+
+    @Override
+    public Collection<Carteira> buscarTodasCarteirasAtivas() {
+        return this.adapter.buscarTodasCarteirasAtivas();
     }
 }

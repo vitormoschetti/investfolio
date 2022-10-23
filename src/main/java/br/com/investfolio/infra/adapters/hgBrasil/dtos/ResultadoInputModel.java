@@ -2,15 +2,17 @@ package br.com.investfolio.infra.adapters.hgBrasil.dtos;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
 
 @ToString
 @NoArgsConstructor
-public class ResultadoInputModel {
+public class ResultadoInputModel implements Serializable {
 
     private Map<String, DadosAcaoInputModel> acoes;
 

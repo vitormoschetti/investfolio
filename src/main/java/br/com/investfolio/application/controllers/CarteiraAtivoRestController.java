@@ -3,6 +3,7 @@ package br.com.investfolio.application.controllers;
 import br.com.investfolio.application.dtos.inputmodel.AdicionarAtivoInputModel;
 import br.com.investfolio.application.useCase.AdicionarAtivoUseCase;
 import br.com.investfolio.core.patterns.result.OperationResult;
+import br.com.investfolio.infra.adapters.hgBrasil.HGBrasilHttpClient;
 import com.andrebreves.tuple.Tuple;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

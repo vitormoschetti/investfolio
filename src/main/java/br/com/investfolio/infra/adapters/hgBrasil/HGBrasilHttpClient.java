@@ -1,6 +1,6 @@
 package br.com.investfolio.infra.adapters.hgBrasil;
 
-import br.com.investfolio.infra.adapters.hgBrasil.dtos.AcaoInputModel;
+import br.com.investfolio.infra.adapters.hgBrasil.dtos.AtivoHGInputModel;
 import br.com.investfolio.core.httpClient.BaseFeign;
 import feign.codec.Encoder;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,7 @@ public class HGBrasilHttpClient extends BaseFeign<IHGBrasilClient> {
         System.out.println(response.getBody());
     }
 
-    public AcaoInputModel obterAtivo(String codigo) {
+    public AtivoHGInputModel obterAtivo(String codigo) {
         final var response = this.client.obterAtivo(codigo);
         return response.getBody();
     }

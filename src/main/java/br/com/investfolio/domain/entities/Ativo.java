@@ -41,17 +41,26 @@ public class Ativo implements Serializable, IEntity {
 
     private BigDecimal totalInvestido;
 
+    private BigDecimal precoAtual;
+
+    private BigDecimal totalAtual;
+
     private Instant dataCompra;
 
     public Ativo(final String codigo, final Long quantidade, final TipoAtivoEnum tipoAtivo,
                  final BigDecimal precoMedio) {
 
-        this.codigo = codigo;
+        this.codigo = codigo.toUpperCase();
         this.tipoAtivo = tipoAtivo;
         this.precoMedio = precoMedio;
         this.quantidade = quantidade;
         this.totalInvestido = precoMedio.multiply(new BigDecimal(quantidade));
         this.dataCompra = Instant.now().atOffset(ZoneOffset.UTC).toInstant();
 
+    }
+
+    public void atualizarPrecoAtual(final BigDecimal precoAtual) {
+        this.precoAtual = precoAtual;
+        this.totalAtual = precoAtual.multiply(new BigDecimal(this.quantidade));
     }
 }

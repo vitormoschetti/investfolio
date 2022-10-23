@@ -40,7 +40,7 @@ public class Carteira implements IEntity {
     private Instant dataCriacao;
 
     @JoinColumn(name = "carteira_id")
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Ativo> ativos = new HashSet<>();
 
     public void criar(final String nome) {
@@ -62,7 +62,19 @@ public class Carteira implements IEntity {
 
         final var ativo = new Ativo(codigo, quantidade, tipoAtivo, precoMedio);
 
+        final var totalInvestido = ativo.getTotalInvestido();
+
+        somarTotalInvestido(totalInvestido);
+
         this.ativos.add(ativo);
 
+    }
+
+    private void somarTotalInvestido(BigDecimal totalInvestido) {
+        this.totalInvestido = this.totalInvestido.add(totalInvestido);
+    }
+
+    public void atualizarTotalAtual() {
+        this.totalAtual = this.ativos.stream().map(Ativo::getTotalAtual).reduce(BigDecimal::add).get();
     }
 }

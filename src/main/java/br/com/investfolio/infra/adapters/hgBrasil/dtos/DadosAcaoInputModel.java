@@ -1,25 +1,21 @@
 package br.com.investfolio.infra.adapters.hgBrasil.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Getter
 @ToString
 @NoArgsConstructor
-public class DadosAcaoInputModel {
+public class DadosAcaoInputModel implements Serializable {
 
     @JsonProperty("symbol")
     private String codigo;
-
-    @JsonProperty("name")
-    private String nome;
-
-    @JsonProperty("website")
-    private String siteRI;
 
     @JsonProperty("price")
     private BigDecimal precoAtual;

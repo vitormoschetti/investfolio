@@ -5,16 +5,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @Getter
 @ToString
 @NoArgsConstructor
-public class AcaoInputModel {
+public class AtivoHGInputModel implements Serializable {
 
     @JsonProperty("results")
     private ResultadoInputModel resultados;
 
-    public DadosAcaoInputModel getAcao(String codigo) {
-        return this.resultados.getAcoes().get(codigo);
+    public DadosAcaoInputModel getAcao() {
+        return this.resultados.getAcoes().values().stream().findFirst().orElse(null);
     }
 
 }

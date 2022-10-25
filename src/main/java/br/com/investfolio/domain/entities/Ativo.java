@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
 import java.time.ZoneOffset;
 
@@ -47,6 +48,8 @@ public class Ativo implements Serializable, IEntity {
 
     private Instant dataCompra;
 
+    private BigDecimal variacao;
+
     public Ativo(final String codigo, final Long quantidade, final TipoAtivoEnum tipoAtivo,
                  final BigDecimal precoMedio) {
 
@@ -62,5 +65,20 @@ public class Ativo implements Serializable, IEntity {
     public void atualizarPrecoAtual(final BigDecimal precoAtual) {
         this.precoAtual = precoAtual;
         this.totalAtual = precoAtual.multiply(new BigDecimal(this.quantidade));
+        this.calcularVariacao();
     }
+
+    public void atualizarPrecoAtual(final BigDecimal precoAtual, final BigDecimal dolar) {
+        this.precoAtual = precoAtual.multiply(dolar);
+        this.totalAtual = precoAtual.multiply(new BigDecimal(this.quantidade)).multiply(dolar);
+        this.calcularVariacao();
+    }
+
+    private void calcularVariacao() {
+
+        this.variacao = this.totalAtual.divide(this.totalInvestido, 2, RoundingMode.HALF_UP).multiply(new BigDecimal(100)).subtract(new BigDecimal(100));
+
+    }
+
+
 }

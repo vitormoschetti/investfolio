@@ -25,6 +25,18 @@ public abstract class BaseFeign<E extends IHttpClient> {
                 .target(client, host);
     }
 
+    @Autowired
+    public BaseFeign(final String host, final Class<E> client, final ResponseEntityDecoder decoder, final Encoder encoder) {
+
+        this.client = Feign.builder()
+                .encoder(encoder)
+                .decoder(decoder)
+//                .errorDecoder(errorDecoder)
+                .contract(new SpringMvcContract())
+                .retryer(new feign.Retryer.Default())
+                .target(client, host);
+    }
+
 
 
 }

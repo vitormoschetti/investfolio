@@ -1,7 +1,7 @@
 package br.com.investfolio.infra.adapters.hgBrasil;
 
-import br.com.investfolio.infra.adapters.hgBrasil.dtos.AtivoHGInputModel;
 import br.com.investfolio.core.httpClient.BaseFeign;
+import br.com.investfolio.infra.adapters.hgBrasil.dtos.AtivoHGInputModel;
 import feign.codec.Encoder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.support.ResponseEntityDecoder;
@@ -17,13 +17,8 @@ public class HGBrasilHttpClient extends BaseFeign<IHGBrasilClient> {
         super(host, IHGBrasilClient.class, decoder, encoder, requestInterceptor);
     }
 
-    public void obterIndices() {
-        final var response = this.client.obterIndices();
-        System.out.println(response.getBody());
-    }
-
     public AtivoHGInputModel obterAtivo(String codigo) {
-        final var response = this.client.obterAtivo(codigo);
+        final var response = this.client.buscarAtivo(codigo);
         return response.getBody();
     }
 

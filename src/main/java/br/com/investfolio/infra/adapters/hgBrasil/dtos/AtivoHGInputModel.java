@@ -1,13 +1,11 @@
 package br.com.investfolio.infra.adapters.hgBrasil.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
 
-@Getter
 @ToString
 @NoArgsConstructor
 public class AtivoHGInputModel implements Serializable {

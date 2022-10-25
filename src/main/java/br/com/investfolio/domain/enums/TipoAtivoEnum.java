@@ -8,7 +8,9 @@ import lombok.Getter;
 public enum TipoAtivoEnum {
 
     ACAO,
-    FUNDO_IMOBILIARIO;
+    FUNDO_IMOBILIARIO,
+    STOCK,
+    REIT;
 
 
 }

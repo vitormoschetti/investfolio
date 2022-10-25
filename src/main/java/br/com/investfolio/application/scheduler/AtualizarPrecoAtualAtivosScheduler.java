@@ -1,6 +1,8 @@
 package br.com.investfolio.application.scheduler;
 
+import br.com.investfolio.infra.adapters.cambio.CambioHttpClient;
 import br.com.investfolio.infra.adapters.hgBrasil.HGBrasilHttpClient;
+import br.com.investfolio.infra.adapters.yahooFinance.YahooFinanceHttpClient;
 import br.com.investfolio.infra.repositories.interfaces.ICarteiraRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -13,11 +15,18 @@ import org.springframework.stereotype.Component;
 public class AtualizarPrecoAtualAtivosScheduler {
 
     private final ICarteiraRepository repository;
-    private final HGBrasilHttpClient httpClient;
+    private final HGBrasilHttpClient hgBrasilHttpClient;
+    private final YahooFinanceHttpClient yahooFinanceHttpClient;
+    private final CambioHttpClient cambioHttpClient;
 
-    public AtualizarPrecoAtualAtivosScheduler(ICarteiraRepository repository, final HGBrasilHttpClient httpClient) {
+    public AtualizarPrecoAtualAtivosScheduler(final ICarteiraRepository repository,
+                                              final HGBrasilHttpClient hgBrasilHttpClient,
+                                              final YahooFinanceHttpClient yahooFinanceHttpClient,
+                                              final CambioHttpClient cambioHttpClient) {
         this.repository = repository;
-        this.httpClient = httpClient;
+        this.cambioHttpClient = cambioHttpClient;
+        this.hgBrasilHttpClient = hgBrasilHttpClient;
+        this.yahooFinanceHttpClient = yahooFinanceHttpClient;
     }
 
 
@@ -27,18 +36,31 @@ public class AtualizarPrecoAtualAtivosScheduler {
 
         log.info("Executando scheduler");
 
+        final var dolarInputModel = this.cambioHttpClient.obterPrecoDolar();
+
         final var carteiras = this.repository.buscarTodasCarteirasAtivas();
 
         carteiras.forEach(carteira -> {
 
             carteira.getAtivos().parallelStream().forEach(ativo -> {
 
-                final var ativoAtualizado = this.httpClient.obterAtivo(ativo.getCodigo());
-                ativo.atualizarPrecoAtual(ativoAtualizado.getAcao().getPrecoAtual());
+                switch (ativo.getTipoAtivo()) {
+
+                    case ACAO:
+                    case FUNDO_IMOBILIARIO:
+                        final var ativoAtualizado = this.hgBrasilHttpClient.obterAtivo(ativo.getCodigo());
+                        ativo.atualizarPrecoAtual(ativoAtualizado.getAcao().getPrecoAtual());
+                        break;
+
+                    case REIT:
+                    case STOCK:
+                        final var yahooFinanceDTO = this.yahooFinanceHttpClient.buscarAtivo(ativo.getCodigo());
+                        ativo.atualizarPrecoAtual(yahooFinanceDTO.getPrecoAtual(), dolarInputModel.getPrecoAtual());
+                        break;
+
+                }
 
             });
-
-            final var fim = System.currentTimeMillis();
 
             carteira.atualizarTotalAtual();
 

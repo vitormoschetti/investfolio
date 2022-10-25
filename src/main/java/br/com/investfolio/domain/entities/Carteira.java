@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.HashSet;
@@ -43,6 +44,8 @@ public class Carteira implements IEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Ativo> ativos = new HashSet<>();
 
+    private BigDecimal variacao;
+
     public void criar(final String nome) {
 
         this.nome = nome.trim();
@@ -76,5 +79,10 @@ public class Carteira implements IEntity {
 
     public void atualizarTotalAtual() {
         this.totalAtual = this.ativos.stream().map(Ativo::getTotalAtual).reduce(BigDecimal::add).get();
+        this.calcularVariacao();
+    }
+
+    private void calcularVariacao() {
+        this.variacao = this.totalAtual.divide(this.totalInvestido, 2, RoundingMode.HALF_UP).multiply(new BigDecimal(100)).subtract(new BigDecimal(100));
     }
 }
